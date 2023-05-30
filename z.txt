@@ -1,0 +1,14 @@
+lệnh cài đặt môi trong recat js
+npx create-react-app my-app
+ cài đặt recat js sử dụng typescript
+ npx create-react-app my-app --template typescript
+
+
+
+
+muốn code bằng tsx thì cài thêm 
+npm install --save-dev typescript @types/node @types/react @types/react-dom
+
+sử dụng router đẻ chuyển màn hingfa-flip-horizontalnpm 
+npm i react-router-dom --save
+npm i react-router

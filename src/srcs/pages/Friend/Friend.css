@@ -1,0 +1,55 @@
+.friend {
+  font-size: 1em;
+}
+.friend-header {
+  font-size: 1em;
+  display: flex;
+  height: 3em;
+  justify-content: space-between;
+  text-align: center;
+  margin: 0 -10px 10px -10px;
+  background: rgb(187, 203, 187);
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.friend-header--search {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.friend-header--menu {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.friend-header--search,
+.friend-header--menu {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.menu__select {
+  border: none;
+  padding: 0 1em 0 1em;
+  background: rgba(255, 255, 255, 0);
+}
+.menu__select:focus {
+  border: none;
+  outline: none;
+}
+.friend-header--menu > .menu--style {
+  margin-left: 20px;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+/* body */
+.lists--friend {
+  height: calc(100vh - 160px);
+  font-size: 1em;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 0.5em 0.5em;
+  overflow: hidden;
+  overflow-y: scroll;
+  grid-auto-rows: max-content;
+}

@@ -1,0 +1,54 @@
+.messenger__header {
+  width: 100%;
+  height: 2em;
+  background: #ececec;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+
+  align-items: center;
+}
+.messenger__header--flex {
+  display: flex;
+}
+.messenger__header__avt {
+  width: 1.75em;
+  height: 1.75em;
+  border-radius: 50%;
+  background: rgb(189, 201, 189);
+}
+.messenger__header__avt + div {
+  margin-left: 1em;
+}
+
+.messenger__rotate {
+  border-radius: 50%;
+  width: 1.25em;
+  height: 1.25em;
+
+  margin-left: 0.5em;
+}
+.messenger__rotate--green {
+  background: #3cfa0c;
+}
+.messenger__rotate--orange {
+  background: #ff782d;
+}
+.messenger__rotate--red {
+  background: #fb1e1e;
+}
+/* css messenger__main */
+.msg__main {
+  border-bottom: 1px solid #fb1e1e;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  width: 100%;
+  height: calc(100vh - 9em);
+  margin-bottom: 0.5em;
+  overflow-y: scroll;
+  padding-bottom: 1em;
+}
+.msg__main ::-webkit-scrollbar {
+  overflow-x: hidden;
+}

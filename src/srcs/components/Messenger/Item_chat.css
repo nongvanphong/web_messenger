@@ -1,0 +1,22 @@
+.panding--top {
+  padding-top: 0.5em;
+}
+
+/* css chat lefft */
+.Item__chat--left {
+  width: 100%;
+}
+.Item__chat--left > div {
+  background: gold;
+  width: 75%;
+}
+/* css chat right */
+.Item__chat--right {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.Item__chat--right > div {
+  width: 75%;
+  background: rgb(184, 178, 151);
+}

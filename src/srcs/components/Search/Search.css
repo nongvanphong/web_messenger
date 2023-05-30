@@ -1,0 +1,26 @@
+.search {
+  width: 100%;
+  height: 100%;
+
+  background: #ffff;
+  padding: 0 10px 0 10px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+.search__input {
+  width: 100%;
+  padding-right: 10px;
+}
+.search__input:focus {
+  border: none;
+  outline: none;
+}
+.search__bnt {
+  cursor: pointer;
+}
+.search__input,
+.search__bnt {
+  border: none;
+}

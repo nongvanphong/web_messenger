@@ -1,0 +1,40 @@
+/* input-send-cmt */
+.input-send-cmt-block {
+  width: -webkit-fill-available;
+  display: flex;
+
+  font-size: 1em;
+  padding-left: 2em;
+}
+.input-send-cmt {
+  line-height: 1.5em;
+  border-radius: 1em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  width: inherit;
+  font-size: 0.65em;
+}
+.bnt-send-cmt {
+  line-height: 1.5em;
+  border-radius: 1em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+.bnt-send-cmt-icon {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+/* input area */
+.input-area-container {
+  font-size: 1em;
+  width: 100%;
+  resize: none;
+  max-height: 10em;
+  border: none;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  overflow: hidden;
+}
+.input-area-container:focus {
+  outline: none; /* ẩn viền khi hover hoặc focus */
+}

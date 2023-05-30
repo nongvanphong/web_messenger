@@ -1,0 +1,40 @@
+.index {
+  font-size: 20px;
+  max-width: 60em;
+  background: rgba(255, 255, 255, 0.474);
+  margin: 0 auto;
+}
+.index--header {
+  font-size: 1em;
+  height: 3.5em;
+  width: 100%;
+  display: flex;
+  padding: 0.25em 0.5em 0.25em 0.5em;
+  justify-content: space-between;
+  align-items: center;
+  background: rgb(143, 208, 227);
+}
+.header--logo {
+  width: 5em;
+}
+.header--avt {
+  width: 3em;
+  height: 3em;
+  background: greenyellow;
+  border-radius: 50%;
+}
+.header--iconsetting {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background: green;
+}
+
+/*body*/
+.index--body {
+  font-size: 1em;
+  width: 100%;
+  padding: 0.5em;
+  height: calc(100vh - 3.5em);
+  border-radius: 0 0 20px 20px;
+}
