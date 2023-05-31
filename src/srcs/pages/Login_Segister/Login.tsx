@@ -4,8 +4,9 @@ import { icon } from "../../icons/icon";
 import { ChangeEvent, useContext, useState } from "react";
 import { Login_Utils } from "../../utils/Login/Login.utils";
 import Information from "./Information";
-import { useNavigate } from "react-router";
+
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 type ty = {
   handleClick: (i: number) => void;

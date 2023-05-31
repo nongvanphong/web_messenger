@@ -10,7 +10,6 @@ import { getDataChat } from "../../utils/Mesenger/Messenger";
 import { Socket, io } from "socket.io-client";
 import { SocketContext } from "../../pages/ScreenChat/ScreenChat";
 import { parse } from "path";
-import { string } from "yup";
 
 // tin nhắn
 interface messenger_inteface {
@@ -41,8 +40,7 @@ interface user_chat_inteface {
 const Messenger = (props: message) => {
   // lấu usecontectsoket ra sử dung
   const socket = useContext(SocketContext);
-  // mang lưu lại tát cả nội dụng chat
-  const [dataMessenger, setDataMessenger] = useState<user_chat_inteface[]>([]);
+
   const [checkUserLoad, setCheckUserLooad] = useState<string[]>([]);
 
   const idtest: string = "1";
@@ -64,28 +62,21 @@ const Messenger = (props: message) => {
 
   const sendInput = (v: string | undefined): void => {
     // thêm dữ liệu vào  kiểu dữ liệu
-    const newTest: messenger_inteface = {
+    const newform: messenger_inteface = {
       idconversations: props.idconversation,
       iduserget: "2",
       timesend: new Date(2022, 0, 1, 12, 0, 0),
       msgtext: v || "",
       idusersend: idtest,
     };
-    // const newTest2: content_inteface = {
-    //   iduserget: "1",
-    //   timesend: new Date(2022, 0, 1, 12, 0, 0),
-    //   msgtext: v || "",
-    //   idusersend: idtest,
-    //   usenamesend: "2",
-    // };
 
     // đẩy dữ liệu vào mnagr
-    setDataConten((prevMsg) => [...prevMsg, newTest]);
+    setDataConten((prevMsg) => [...prevMsg, newform]);
     // setDataMessenger((prevMsg) => [...prevMsg, newTest2]);
-    console.log(dataMessenger, props.idconversation);
+    console.log(dataContent);
     if (socket)
       socket.emit("private message", {
-        content: newTest,
+        content: newform,
         to: "8d7UDsyWro0v5_ouAAAd",
       });
     // console.log("kkkk");
@@ -97,7 +88,6 @@ const Messenger = (props: message) => {
       let result: any;
       // kiểm tra id đã được thêm vào mảng hay chưa, nếu đã tồn tạo thì không dduwicj thêm
       const checkId = checkUserLoad.findIndex((i) => i === props.idsend);
-      console.log(checkId);
       if (checkId == -1 && props.idsend !== undefined) {
         checkUserLoad.push(props.idsend);
         result = await getDataChat(idtest, props.idsend);

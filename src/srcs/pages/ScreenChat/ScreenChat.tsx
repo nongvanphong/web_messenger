@@ -10,7 +10,7 @@ import {
 } from "../../utils/Mesenger/Messenger";
 import { Socket, io } from "socket.io-client";
 import { ApiSocket } from "../../utils/socket/Sockets";
-
+import { useCookies } from "react-cookie";
 interface users_inteface {
   idusers: string;
   users_name: string;
@@ -33,6 +33,11 @@ interface list_user_messenger_inteface {
 export const SocketContext = createContext<Socket | null>(null);
 
 const ScreenChat = () => {
+  // cookies
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "cookieAcceptToken",
+    "cookieRefreshToken",
+  ]);
   const [socket, setSocket] = useState<Socket | null>(null);
   const idtest: string = "1";
   const [checkSearch, setCheckSearch] = useState<boolean>(true);
@@ -78,7 +83,12 @@ const ScreenChat = () => {
 
   useEffect(() => {
     // Khởi tạo socket khi component được render
-    const newSocket = io(ApiSocket);
+    const newSocket = io(ApiSocket, {
+      // đây là chuyền tham số
+      auth: {
+        token: cookies.cookieAcceptToken,
+      },
+    });
     setSocket(newSocket);
 
     // Lắng nghe sự kiện "connect" khi kết nối thành công
@@ -95,7 +105,7 @@ const ScreenChat = () => {
     return () => {
       // Lắng nghe sự kiện "disconnect" khi đóng kết nối
       newSocket.on("disconnect", () => {
-        console.log("Ngắt kết nối");
+        console.log("Mất kết nối");
       });
 
       // Đóng kết nối socket

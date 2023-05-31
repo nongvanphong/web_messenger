@@ -7,8 +7,9 @@ import { GetDataInformationUsser, a } from "../../utils/User/User.utils";
 import { useEffect, useState } from "react";
 import { user_interface } from "../../Interface/Interface.User";
 import Notifycation from "../../components/Modals/Notifycation";
-import { useNavigate } from "react-router";
+
 import ScreenChat from "../ScreenChat/ScreenChat";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   // cookies
@@ -27,7 +28,7 @@ const Index = () => {
     // quay lại trang login
     removeCookie("cookieAcceptToken");
     removeCookie("cookieRefreshToken");
-    navigater("/login");
+    navigater("/");
     window.history.replaceState(null, "", window.location.origin);
   };
 
@@ -56,7 +57,7 @@ const Index = () => {
         showmd={showModal}
         handleClose={handleCloseModal}
         title="Thông báo"
-        msg="Bnaj cần xác minh lại tài khoản. Vui lòng đăng nhập lại"
+        msg="Bạn cần xác minh lại tài khoản. Vui lòng đăng nhập lại"
         titlebnt="Đăng nhập"
       />
       <div className="index--header">
