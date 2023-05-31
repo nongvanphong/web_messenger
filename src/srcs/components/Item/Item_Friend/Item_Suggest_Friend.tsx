@@ -4,7 +4,7 @@ import img from "../../../img/avt1.jpg";
 import ImageAvt from "../../Images/ImageAvt";
 import { type } from "os";
 import { folower_interface } from "../../../Interface/Interface.User";
-import { SessionUser } from "../../../../App";
+
 import { useContext } from "react";
 
 type types = {

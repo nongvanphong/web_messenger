@@ -14,15 +14,12 @@ import {
   friend_interface,
   myfriend_interface,
 } from "../../Interface/Interface.User";
-import { SessionUser } from "../../../App";
+
 import { useNavigate } from "react-router";
 import { useCookies } from "react-cookie";
 import Notifycation from "../../components/Modals/Notifycation";
 
 const Friend = () => {
-  // get usecontext
-  const sessionUser = useContext(SessionUser);
-  console.log(sessionUser.iduser);
   // choos show list friend
   const [select, setselect] = useState<string>("myfriend");
   const [showitem, setshowitem] = useState<JSX.Element[] | null>(null);

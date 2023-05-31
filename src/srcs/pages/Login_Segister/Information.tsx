@@ -11,15 +11,12 @@ import { useDropzone } from "react-dropzone";
 import { icon } from "../../icons/icon";
 import { useNavigate } from "react-router-dom";
 import { Fill_Up_information_Utils } from "../../utils/Login/Login.utils";
-import { SessionUser } from "../../../App";
+
 type ty = {
   handleClick: (i: number) => void;
   iduser: string | undefined;
 };
 const Information = (props: ty) => {
-  // get usecontext
-  const sessionUser = useContext(SessionUser);
-
   const [checknext, setchecknext] = useState<number>(1);
   const [img, setimg] = useState<string>();
   const [username, setusername] = useState<string>();
@@ -53,7 +50,6 @@ const Information = (props: ty) => {
   // fill up information
   const updateInformation = async () => {
     if (props.iduser && username && file) {
-      sessionUser.setSession(props.iduser);
       const result: any = await Fill_Up_information_Utils(
         props.iduser,
         username,

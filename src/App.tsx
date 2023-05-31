@@ -1,24 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { createContext, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
+import Login_Segister_page from "./srcs/pages/Login_Segister/Login_Segister_page";
+import { Socket, io } from "socket.io-client";
+import Index from "./srcs/pages/Index/Index";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login_Segister_page />} />
+          <Route path="home" element={<Index />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
