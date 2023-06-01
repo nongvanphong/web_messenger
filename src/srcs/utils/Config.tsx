@@ -29,6 +29,9 @@ const apiSearchUserChat = SERVER + "/search-messenger-users";
 const apiGetDataChat = SERVER + "/private-messenge";
 const apiGetDataUserChat = SERVER + "/get-list-data-user-messenger";
 
+const apiGetIdConversation = SERVER + "/create-messenge-private";
+const apiInsertContent = SERVER + "/insert-private-messenge";
+
 export {
   apifriendsuggest,
   apimyfriend,
@@ -44,4 +47,6 @@ export {
   apiSearchUserChat,
   apiGetDataChat,
   apiGetDataUserChat,
+  apiGetIdConversation,
+  apiInsertContent,
 };

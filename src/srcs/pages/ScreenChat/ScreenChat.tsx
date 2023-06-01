@@ -39,16 +39,12 @@ const ScreenChat = () => {
     "cookieRefreshToken",
   ]);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const idtest: string = "1";
+  const idtest: string = "7";
   const [checkSearch, setCheckSearch] = useState<boolean>(true);
   const [dataSearch, setDataSearch] = useState<users_inteface[]>();
   const [dataUserChat, setDataUserChat] = useState<
     list_user_messenger_inteface[]
   >([]);
-
-  // tạo biết lưu soket để sử dụng nhiều lần
-  const useRefSocket = useRef<Socket>();
-
   const [idSend, setIdSend] = useState<string | undefined>();
   const [idconversation, setIdConversation] = useState<string | undefined>();
   const handleInput = (a: string): void => {
@@ -170,9 +166,11 @@ const ScreenChat = () => {
             </div>
           )}
         </div>
-        <div className="msg--right">
-          <Messenger idsend={idSend} idconversation={idconversation} />
-        </div>
+        {idSend && (
+          <div className="msg--right">
+            <Messenger idsend={idSend} idconversation={idconversation} />
+          </div>
+        )}
       </div>
     </SocketContext.Provider>
   );

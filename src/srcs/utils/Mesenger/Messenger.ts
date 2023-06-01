@@ -2,6 +2,8 @@ import axios from "axios";
 import {
   apiGetDataChat,
   apiGetDataUserChat,
+  apiGetIdConversation,
+  apiInsertContent,
   apiSearchUserChat,
 } from "../Config";
 
@@ -36,6 +38,41 @@ export const getDataUserChat = async (myid: string) => {
   try {
     const response = await axios.post(apiGetDataUserChat, {
       myid: myid,
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+// lấy id convesation để gtaoj phòng chat
+export const getIdConversations = async (myid: string, iduserget: string) => {
+  try {
+    const response = await axios.post(apiGetIdConversation, {
+      myid: myid,
+      idreceiver: iduserget,
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+// giử nội dung lên sever
+export const insertContent = async (
+  myid: string,
+  idreceiver: string | undefined,
+  content: string | undefined,
+  idconversation: string
+) => {
+  try {
+    const response = await axios.post(apiInsertContent, {
+      myid: myid,
+      idreceiver: idreceiver,
+      content: content,
+      idconversation: idconversation,
     });
 
     return response;
