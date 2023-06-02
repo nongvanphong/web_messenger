@@ -13,7 +13,6 @@ import {
 
 import { Socket, io } from "socket.io-client";
 import { SocketContext } from "../../pages/ScreenChat/ScreenChat";
-import { parse } from "path";
 
 // tin nhắn
 interface messenger_inteface {
@@ -31,7 +30,7 @@ type message = {
 
 const Messenger = (props: message) => {
   // lấu usecontectsoket ra sử dung
-  const socket = useContext(SocketContext);
+  const { socket } = useContext(SocketContext);
 
   const [checkUserLoad, setCheckUserLooad] = useState<string[]>([]);
 
@@ -101,7 +100,7 @@ const Messenger = (props: message) => {
         setDataConten((prevMsg) => [...prevMsg, message.content]);
       });
     }
-    // // Cleanup khi component unmount
+    // Cleanup khi component unmount
     return () => {
       if (socket) socket.disconnect();
     };
@@ -128,36 +127,27 @@ const Messenger = (props: message) => {
       msgtext: v || "",
       idusersend: idtest, // không cần điềm vì lên sevre sẽ có id của mình
     };
+    const result: any = await insertContent(
+      idtest,
+      props.idsend,
+      v,
+      idconversations
+    );
+    if (result.status !== 200) {
+      return alert("không gửi được tin nhắn");
+    }
 
-    // const result: any = await insertContent(
-    //   idtest,
-    //   props.idsend,
-    //   v,
-    //   idconversations
-    // );
+    // đẩy dữ liệu lên soket
+    if (socket)
+      socket.emit("private message", {
+        content: newform,
+        to: props.idsend,
+      });
 
-    // console.log(result);
-
-    // console.log("vòa-----");
-    // if (result.response.status != 500) {
-    //   console.log("ccccccccccccccccc");
-    // } else {
-    //   console.log("không gửi được tin nhắn");
-    // }
-
-    console.log("vòa");
     // đẩy dữ liệu vào mnagr
     setDataConten((prevMsg) => [...prevMsg, newform]);
 
-    // setDataMessenger((prevMsg) => [...prevMsg, newTest2]);
-
-    console.log(dataContent);
-    // if (socket)
-    //   socket.emit("private message", {
-    //     content: newform,
-    //     to: "psd7UDsyWro0v5_ouAAAd",
-    //   });
-    // console.log("kkkk");
+    //console.log(dataContent);
   };
   // hàm tạo idconversation
   const createIdConversation = async (
@@ -168,6 +158,7 @@ const Messenger = (props: message) => {
     const result: any = await getIdConversations(idsend, idget);
     if (result.status == 200) {
       setIdConversation2(result.data);
+
       sendMsg(v, result.data);
     } else {
       alert("chức năng này đang bị lỗi nghiêm trong");

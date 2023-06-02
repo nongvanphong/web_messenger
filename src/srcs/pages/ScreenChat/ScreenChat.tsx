@@ -30,7 +30,13 @@ interface list_user_messenger_inteface {
   notify: string;
 }
 
-export const SocketContext = createContext<Socket | null>(null);
+interface SocketContextProps {
+  socket: Socket | null;
+}
+
+export const SocketContext = createContext<SocketContextProps>({
+  socket: null,
+});
 
 const ScreenChat = () => {
   // cookies
@@ -85,6 +91,7 @@ const ScreenChat = () => {
         token: cookies.cookieAcceptToken,
       },
     });
+
     setSocket(newSocket);
 
     // Lắng nghe sự kiện "connect" khi kết nối thành công
@@ -99,6 +106,7 @@ const ScreenChat = () => {
 
     // Cleanup khi component unmount hoặc khi socket thay đổi
     return () => {
+      console.log("disconect");
       // Lắng nghe sự kiện "disconnect" khi đóng kết nối
       newSocket.on("disconnect", () => {
         console.log("Mất kết nối");
@@ -109,7 +117,7 @@ const ScreenChat = () => {
     };
   }, []);
   return (
-    <SocketContext.Provider value={socket}>
+    <SocketContext.Provider value={{ socket }}>
       <div className="msg__container">
         <div className="msg--left">
           <div className="msg__sr">
