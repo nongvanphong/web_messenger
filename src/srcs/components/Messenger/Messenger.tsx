@@ -91,19 +91,23 @@ const Messenger = (props: message) => {
   }, [props.idsend]);
 
   useEffect(() => {
-    if (socket !== null) {
-      socket.on("users", (message) => {
+    if (socket) {
+      const handleUsers = (message: any) => {
         console.log("=>", message);
-      });
-      socket.on("private message", (message) => {
-        console.log(message.content);
+      };
+      const handlePrivateMessage = (message: any) => {
         setDataConten((prevMsg) => [...prevMsg, message.content]);
-      });
+      };
+
+      socket.on("users", handleUsers);
+      socket.on("private message", handlePrivateMessage);
+
+      // Cleanup khi component unmount
+      return () => {
+        socket.off("users", handleUsers);
+        socket.off("private message", handlePrivateMessage);
+      };
     }
-    // Cleanup khi component unmount
-    return () => {
-      if (socket) socket.disconnect();
-    };
   }, [socket]);
 
   // hàm kiêm tra 2 người đã nhắn tin với nhau hay chưa
@@ -143,7 +147,7 @@ const Messenger = (props: message) => {
         content: newform,
         to: props.idsend,
       });
-
+    console.log("qua");
     // đẩy dữ liệu vào mnagr
     setDataConten((prevMsg) => [...prevMsg, newform]);
 

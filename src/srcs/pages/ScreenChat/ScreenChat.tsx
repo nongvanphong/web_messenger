@@ -111,9 +111,8 @@ const ScreenChat = () => {
       newSocket.on("disconnect", () => {
         console.log("Mất kết nối");
       });
-
       // Đóng kết nối socket
-      newSocket.disconnect();
+      if (newSocket) newSocket.disconnect();
     };
   }, []);
   return (
