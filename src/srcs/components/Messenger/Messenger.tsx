@@ -11,9 +11,9 @@ import {
   insertContent,
 } from "../../utils/Mesenger/Messenger";
 
-import { Socket, io } from "socket.io-client";
 import { SocketContext } from "../../pages/ScreenChat/ScreenChat";
-
+import { user_interface } from "../../Interface/Interface.User";
+import img from "../../img/avt.jpg";
 // tin nhắn
 interface messenger_inteface {
   idconversations: string | undefined;
@@ -23,18 +23,15 @@ interface messenger_inteface {
   timesend: Date;
 }
 
-type message = {
-  idsend: string | undefined;
-  idconversation: string | undefined;
-};
-
-const Messenger = (props: message) => {
+interface user_Type extends user_interface {
+  idconversations: string;
+}
+const Messenger = (props: user_Type) => {
   // lấu usecontectsoket ra sử dung
-  const { socket } = useContext(SocketContext);
+  const { socket, myId } = useContext(SocketContext);
 
   const [checkUserLoad, setCheckUserLooad] = useState<string[]>([]);
 
-  const idtest: string = "7";
   const [idConversation2, setIdConversation2] = useState<string | undefined>(
     undefined
   );
@@ -59,15 +56,15 @@ const Messenger = (props: message) => {
     console.log("------>", checkUserChat());
     // trước khi gửi tin nhắn kiểm tra có idconvertion  có tồn tại không
 
-    if (props.idconversation || idConversation2) {
+    if (props.idconversations || idConversation2) {
       // sử lí các user đã tồn tạo và đang nhắn tin
       let idconversationnew: string = "";
-      if (props.idconversation) idconversationnew = props.idconversation;
+      if (props.idconversations) idconversationnew = props.idconversations;
       if (idConversation2) idconversationnew = idConversation2;
       sendMsg(v, idconversationnew);
     } else {
       // yêu cầu tạo tin nhắn mới
-      if (props.idsend) createIdConversation(idtest, props.idsend, v);
+      if (props.iduser) createIdConversation(myId, props.iduser, v);
     }
   };
 
@@ -78,17 +75,15 @@ const Messenger = (props: message) => {
       let result: any;
 
       // kiểm tra id đã được thêm vào mảng hay chưa, nếu đã tồn tạo thì không dduwicj thêm
-      const checkId = checkUserLoad.findIndex((i) => i === props.idsend);
-
-      if (checkId == -1 && props.idsend !== undefined) {
-        checkUserLoad.push(props.idsend);
-        result = await getDataChat(idtest, props.idsend);
-
+      const checkId = checkUserLoad.findIndex((i) => i === props.iduser);
+      if (checkId == -1 && props.iduser !== undefined) {
+        checkUserLoad.push(props.iduser);
+        result = await getDataChat(myId, props.iduser);
         setDataConten((p) => [...p, ...result.data]);
       }
     };
     getData();
-  }, [props.idsend]);
+  }, [props.iduser]);
 
   useEffect(() => {
     if (socket) {
@@ -113,10 +108,10 @@ const Messenger = (props: message) => {
   // hàm kiêm tra 2 người đã nhắn tin với nhau hay chưa
   const checkUserChat = () => {
     const id = dataContent.findIndex((i) => {
-      if (i.iduserget === props.idsend && i.idusersend === idtest) {
+      if (i.iduserget === props.iduser && i.idusersend === myId) {
         return true;
       }
-      return false; // Trả về false nếu điều kiện không đúng
+      return false;
     });
     return id;
   };
@@ -126,14 +121,14 @@ const Messenger = (props: message) => {
     // thêm dữ liệu vào  kiểu dữ liệu
     const newform: messenger_inteface = {
       idconversations: idconversations,
-      iduserget: props.idsend,
+      iduserget: props.iduser,
       timesend: new Date(2022, 0, 1, 12, 0, 0),
       msgtext: v || "",
-      idusersend: idtest, // không cần điềm vì lên sevre sẽ có id của mình
+      idusersend: myId,
     };
     const result: any = await insertContent(
-      idtest,
-      props.idsend,
+      myId,
+      props.iduser,
       v,
       idconversations
     );
@@ -145,10 +140,8 @@ const Messenger = (props: message) => {
     if (socket)
       socket.emit("private message", {
         content: newform,
-        to: props.idsend,
+        to: props.iduser,
       });
-    console.log("qua");
-    // đẩy dữ liệu vào mnagr
     setDataConten((prevMsg) => [...prevMsg, newform]);
 
     //console.log(dataContent);
@@ -173,8 +166,8 @@ const Messenger = (props: message) => {
     <div>
       <div className="messenger__header">
         <div className="messenger__header--flex">
-          <div className="messenger__header__avt"></div>
-          <div>Phong phong</div>
+          <img className="messenger__header__avt" src={props.img}></img>
+          <div>{props.users_name}</div>
         </div>
         <div className="messenger__header--flex">
           <div className="messenger__rotate messenger__rotate--green"></div>
@@ -185,16 +178,13 @@ const Messenger = (props: message) => {
 
       <div className="msg__main" ref={messageListRef}>
         {dataContent.map((message, index) => {
-          if (
-            message.idusersend == idtest &&
-            message.iduserget == props.idsend
-          ) {
+          if (message.idusersend == myId && message.iduserget == props.iduser) {
             return (
               <Item_chat.Item_chat_right txt={message.msgtext} key={index} />
             );
           } else if (
-            message.idusersend == props.idsend &&
-            message.iduserget == idtest
+            message.idusersend == props.iduser &&
+            message.iduserget == myId
           ) {
             return (
               <Item_chat.Item_chat_left txt={message.msgtext} key={index} />

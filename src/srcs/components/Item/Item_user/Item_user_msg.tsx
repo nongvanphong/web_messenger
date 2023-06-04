@@ -6,19 +6,37 @@ type typeItem = {
   conten: string | null;
   time: Date | null;
   idconversation: string;
-  handleClick: (iduser: string, idconversation: string) => void;
+  img: string;
+  handleClick: (
+    iduser: string,
+    idconversation: string,
+    username: string,
+    img: string
+  ) => void;
 };
 const Item_user_msg = (props: typeItem) => {
-  const hanldeClick = (iduser: string, idconversation: string) => {
-    props.handleClick(iduser, idconversation);
+  const hanldeClick = (
+    iduser: string,
+    idconversation: string,
+    username: string,
+    img: string
+  ) => {
+    props.handleClick(iduser, idconversation, username, img);
   };
   return (
     <div
-      onClick={() => hanldeClick(props.iduser, props.idconversation)}
+      onClick={() =>
+        hanldeClick(
+          props.iduser,
+          props.idconversation,
+          props.username,
+          props.img
+        )
+      }
       className="itemuser__container"
     >
       <div className="itemuser">
-        <div className="itemuser__avt"></div>
+        <img src={props.img} className="itemuser__avt"></img>
         <div className="itemuser__msg">
           <div className="itemuser__name">{props.username}</div>
           <div className="itemuser__msg__item">{props.conten}</div>
@@ -33,17 +51,23 @@ const Item_user_msg = (props: typeItem) => {
   );
 };
 const Item_user_msg_search = (props: typeItem) => {
-  const hanldeClick = (iduser: string, idconversation: string) => {
-    props.handleClick(iduser, "");
+  const hanldeClick = (
+    iduser: string,
+    idconversation: string,
+    username: string,
+    img: string
+  ) => {
+    console.log(img);
+    props.handleClick(iduser, "", username, img);
   };
 
   return (
     <div
-      onClick={() => hanldeClick(props.iduser, "")}
+      onClick={() => hanldeClick(props.iduser, "", props.username, props.img)}
       className="itemuser__container"
     >
       <div className="itemuser">
-        <div className="itemuser__avt"></div>
+        <img src={props.img} className="itemuser__avt"></img>
         <div className="itemuser__msg">
           <div className="itemuser__name">{props.username}</div>
         </div>

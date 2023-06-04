@@ -11,6 +11,7 @@ import {
 import { Socket, io } from "socket.io-client";
 import { ApiSocket } from "../../utils/socket/Sockets";
 import { useCookies } from "react-cookie";
+import { user_interface } from "../../Interface/Interface.User";
 interface users_inteface {
   idusers: string;
   users_name: string;
@@ -21,7 +22,7 @@ interface list_user_messenger_inteface {
   idconversations: string;
   iduser1: string;
   name1: string;
-  img1: null;
+  img1: string;
   iduser2: string;
   name2: string;
   img2: string;
@@ -30,12 +31,18 @@ interface list_user_messenger_inteface {
   notify: string;
 }
 
+interface user_Type extends user_interface {
+  idconversations: string;
+}
+
 interface SocketContextProps {
   socket: Socket | null;
+  myId: string;
 }
 
 export const SocketContext = createContext<SocketContextProps>({
   socket: null,
+  myId: "",
 });
 
 const ScreenChat = () => {
@@ -45,14 +52,14 @@ const ScreenChat = () => {
     "cookieRefreshToken",
   ]);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const idtest: string = "7";
+  const [myId, setMyId] = useState<string>("-1");
   const [checkSearch, setCheckSearch] = useState<boolean>(true);
   const [dataSearch, setDataSearch] = useState<users_inteface[]>();
   const [dataUserChat, setDataUserChat] = useState<
     list_user_messenger_inteface[]
   >([]);
-  const [idSend, setIdSend] = useState<string | undefined>();
-  const [idconversation, setIdConversation] = useState<string | undefined>();
+  const [inforUserChat, setInforUserChat] = useState<user_Type>();
+
   const handleInput = (a: string): void => {
     searchApi(a);
     setCheckSearch(false);
@@ -69,16 +76,34 @@ const ScreenChat = () => {
   };
 
   // hàm kiểm tra người dùng sẽ nhắn tin với ai
-  const getIdUserChat = async (a: string, idconversation: string) => {
-    setIdSend(a);
-    setIdConversation(idconversation);
+  const getIdUserChat = async (
+    a: string,
+    idconversation: string,
+    username: string,
+    img: string
+  ) => {
+    setInforUserChat({
+      condistion: 1,
+      email: "",
+      idconversations: idconversation,
+      iduser: a,
+      img: img,
+      users_name: username,
+      users_premission: 1,
+    });
   };
   // load dữ liệu lanaff đầu tiên để lấy danh sách những người bạn đã chat
   useEffect(() => {
-    const dataUserChat = async () => {
-      const result: any = await getDataUserChat(idtest);
+    let myid: string | null = localStorage.getItem("myId");
+    if (myid) {
+      setMyId(myid);
+    }
 
-      setDataUserChat(result.data);
+    const dataUserChat = async () => {
+      if (myid) {
+        const result: any = await getDataUserChat(myid);
+        setDataUserChat(result.data);
+      }
     };
     dataUserChat();
   }, []);
@@ -100,8 +125,20 @@ const ScreenChat = () => {
     });
 
     // Lắng nghe sự kiện "users" từ server
-    newSocket.on("users", (message) => {
-      console.log("ID đang hoạt động:", message);
+    newSocket.on("notify private massage", (message) => {
+      console.log("thông báo", message);
+      setDataUserChat(
+        dataUserChat.map((item) => {
+          console.log(item.iduser1, item.iduser2, message.from);
+          if (item.iduser1 == message.from) {
+            return { ...item, msgtext: message.content.msgtext };
+          } else if (item.iduser2 == message.from) {
+            return { ...item, msgtext: message.content.msgtext };
+          } else {
+            return item;
+          }
+        })
+      );
     });
 
     // Cleanup khi component unmount hoặc khi socket thay đổi
@@ -116,7 +153,7 @@ const ScreenChat = () => {
     };
   }, []);
   return (
-    <SocketContext.Provider value={{ socket }}>
+    <SocketContext.Provider value={{ socket, myId }}>
       <div className="msg__container">
         <div className="msg--left">
           <div className="msg__sr">
@@ -134,7 +171,7 @@ const ScreenChat = () => {
           {checkSearch && (
             <div className="msg_listuser">
               {dataUserChat.map((item, index) =>
-                item.iduser1 != idtest ? (
+                item.iduser1 != myId ? (
                   <itemuser.Item_user_msg
                     conten={item.msgtext}
                     iduser={item.iduser1}
@@ -142,6 +179,7 @@ const ScreenChat = () => {
                     username={item.name1}
                     handleClick={getIdUserChat}
                     idconversation={item.idconversations}
+                    img={item.img1}
                   />
                 ) : (
                   <itemuser.Item_user_msg
@@ -151,6 +189,7 @@ const ScreenChat = () => {
                     username={item.name2}
                     handleClick={getIdUserChat}
                     idconversation={item.idconversations}
+                    img={item.img2}
                   />
                 )
               )}
@@ -167,15 +206,26 @@ const ScreenChat = () => {
                     username={item.users_name}
                     time={null}
                     conten={null}
+                    img={item.img}
                   />
                 );
               })}
             </div>
           )}
         </div>
-        {idSend && (
+        {inforUserChat?.iduser && (
           <div className="msg--right">
-            <Messenger idsend={idSend} idconversation={idconversation} />
+            {inforUserChat && (
+              <Messenger
+                condistion={inforUserChat.condistion}
+                email={inforUserChat.email}
+                idconversations={inforUserChat.idconversations}
+                users_name={inforUserChat.users_name}
+                iduser={inforUserChat.iduser}
+                img={inforUserChat.img}
+                users_premission={inforUserChat.users_premission}
+              />
+            )}
           </div>
         )}
       </div>

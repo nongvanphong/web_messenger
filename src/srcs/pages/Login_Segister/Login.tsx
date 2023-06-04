@@ -78,6 +78,8 @@ const Login = (props: ty) => {
       path: "/",
       expires: expirationDate,
     });
+    // Lưu trữ ID người dùng vào local storage
+    localStorage.setItem("myId", result.data.id);
 
     navigater("/home");
   };
