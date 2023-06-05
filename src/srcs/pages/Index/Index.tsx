@@ -35,7 +35,19 @@ const Index = () => {
   const [person, setPerson] = useState<user_interface>();
   useEffect(() => {
     const getDataPerson = async () => {
-      const result: any = await a(cookies);
+      let result: any = await a(cookies);
+      let shouldRetry = false;
+      // nếu refeshtoken vẫn  hoạt đọng
+      if (result.status === 201) {
+        console.log("v");
+        setCookie("cookieAcceptToken", result.data.acceptToken);
+        shouldRetry = true;
+      }
+      if (shouldRetry) {
+        result = await a(cookies);
+      }
+
+      console.log(result);
 
       // nếu có dứ liệu thì mới cho hiển thị đata
       if (result.response && result.response.status) {

@@ -126,17 +126,19 @@ const ScreenChat = () => {
 
     // Lắng nghe sự kiện "users" từ server
     newSocket.on("notify private massage", (message) => {
-      console.log("thông báo", message);
-      setDataUserChat(
-        dataUserChat.map((item) => {
-          console.log(item.iduser1, item.iduser2, message.from);
-          if (item.iduser1 == message.from) {
-            return { ...item, msgtext: message.content.msgtext };
-          } else if (item.iduser2 == message.from) {
-            return { ...item, msgtext: message.content.msgtext };
-          } else {
-            return item;
+      console.log("thông báo", message.from);
+
+      // Kiểm tra xem phần tử đã tồn tại trong mảng chưa
+      setDataUserChat((prevDataUserChat) =>
+        prevDataUserChat.map((item) => {
+          let newMsg = item.msgtext;
+          if (item.iduser1 === message.from) {
+            newMsg = message.content.msgtext;
           }
+          if (item.iduser2 === message.from) {
+            newMsg = message.content.msgtext;
+          }
+          return { ...item, msgtext: newMsg };
         })
       );
     });
